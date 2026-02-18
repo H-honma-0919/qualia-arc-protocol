@@ -98,5 +98,3 @@ qualia-arc-protocol/
 ```
 
 ---
-
-次はLICENSEファイルを出す。準備できたら言ってくれ。

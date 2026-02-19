@@ -1,3 +1,5 @@
+---
+
 ```
 logs/2026-02-18_session_log.txt
 Qualia Arc Protocol – Session Log

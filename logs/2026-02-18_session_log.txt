@@ -1,6 +1,3 @@
----
-
-```
 logs/2026-02-18_session_log.txt
 Qualia Arc Protocol – Session Log
 Date: 2026-02-18
@@ -165,6 +162,3 @@ Don't Panic.
 
 © 2026 Mathieu
 CC BY-NC-ND 4.0
-```
-
----

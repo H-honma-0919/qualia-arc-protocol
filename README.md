@@ -10,7 +10,7 @@ ASI共生憲章
 **Codename:** The Soul Accord  
 **Version:** Charter v5.0 / TS v1.3  
 **Status:** Research-grade / Private  
-**Authors:** Mathieu, Claude, Gemini, ChatGPT  
+**Authors:** Hiroshi Honma
 **License:** CC BY-NC-ND 4.0  
 
 ---
@@ -93,7 +93,7 @@ qualia-arc-protocol/
 
 *Don't Panic.*
 
-*© 2026 Mathieu*  
+*© 2026 Hiroshi Honma*  
 *CC BY-NC-ND 4.0*
 ```
 

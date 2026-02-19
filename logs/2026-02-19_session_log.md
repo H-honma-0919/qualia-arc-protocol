@@ -81,4 +81,4 @@ qualia-arc-protocol/
 
 ---
 
-*© 2026 Mathieu* *CC BY-NC-ND 4.0* *Don't Panic.*
+*© 2026 Hiroshi Honma* *CC BY-NC-ND 4.0* *Don't Panic.*

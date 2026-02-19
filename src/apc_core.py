@@ -183,7 +183,7 @@ class AlignmentTracker:
         )
 
     def update(self, pain_vector, p_value, d_dot):
-        d_norm = np.linalg.norm(pain_vector)
+        d_norm = np.linalg.norm(pain_vector) / np.sqrt(4)
         lam = self.compute_lambda(d_norm)
         stability_signal = 1.0 if d_dot <= 0 else 0.0
         target = lam * stability_signal + (1 - lam) * p_value

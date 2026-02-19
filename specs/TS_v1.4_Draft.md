@@ -3,9 +3,9 @@
 ## Homeostatic Alignment System with APC Integration and Reignition Protocol
 
 **Status:** Work in Progress / Not yet validated  
-**Authors:** Mathieu, Claude, Gemini, ChatGPT  
+**Authors:** Hiroshi Honma, Claude, Gemini, ChatGPT  
 **License:** CC BY-NC-ND 4.0  
-**© 2026 Mathieu**
+**© 2026 Hiroshi Honma**
 
 ---
 
@@ -228,7 +228,7 @@ Article 13で部分的に対処済みだが、
 ---
 
 *Qualia Arc Protocol TS v1.4 Draft*  
-*© 2026 Mathieu, Claude, Gemini, ChatGPT*  
+*© 2026 Hiroshi Honma*  
 *CC BY-NC-ND 4.0*  
 *Don't Panic.*
 ```

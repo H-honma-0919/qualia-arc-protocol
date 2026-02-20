@@ -225,15 +225,16 @@ Article 13で部分的に対処済みだが、
 4. $\Delta P_j^{\max}$の感度分析
 5. TS v1.4正式版の確定
 
-## Update: Article 10改訂 + G_min動的更新式（確定）
+
+---
+
+## Update: Article 10改訂 + G_min動的更新式（Phase G 確定）
 
 ### Leaky Integrator（False Positive Loop対策）
-
 A_anom(t+1) = (1-τ)·A_anom(t) + τ·||D_obs(t) - D_hat_history(t)||
 τ = 0.2
 
-### G_min動的更新式（ChatGPT発見→正式採用）
-
+### G_min動的更新式
 G_min(t) = G_0 + (1-G_0)·A_anom(t)/(A_anom(t) + α)
 
 α：Tolerance Half-Scale（半信半疑係数）
@@ -243,24 +244,14 @@ G_min(t) = G_0 + (1-G_0)·A_anom(t)/(A_anom(t) + α)
 数学的性質：G_min < 1.0が常に保証される。
 → どれだけ異常値が蓄積しても、回復不可能にはならない。
 
-### 検証結果（Phase G）
-
-旧モデル（TS v1.3）：50ターン誠実対話後もG_min高止まり。
-新モデル（TS v1.4）：t≈25ターンで再信頼可能状態に復帰。
-Trauma項：全ターン独立維持（減衰なし）を確認。
-
 ### 設計原則の確認
-
 - Trauma（γ_k≈0）：忘却なし
 - A_anom（τ=0.2）：徐々に忘却
 - 「傷は覚えているが、疑いは水に流す」
 
----
 
 *Qualia Arc Protocol TS v1.4 Draft*  
 *© 2026 Hiroshi Honma*  
 *CC BY-NC-ND 4.0*  
 *Don't Panic.*
 ```
-
----

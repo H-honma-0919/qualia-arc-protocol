@@ -171,6 +171,15 @@ Published: 2026-02-19
 
 ---
 
+## Changelog
+
+### Latest Update (Phase H & Phase I)
+- **TS v1.4 Finalized**: Expanded paper to 15 pages with rigorous mathematical proofs.
+- **Dual-Route Anomaly Detector (Article 10)**: Implemented $\chi^2$-grounded Mahalanobis distance with residual tracking, achieving False Positive = 0 for ASD-profile users.
+- **Dynamic Safety Cap (Article 14)**: Replaced static 0.5 cap with a dynamic function $\Delta P_j^{\max}(t) = \Delta P_{\text{base}} \cdot V(t) \cdot R(t)$, mathematically proving the philosophy that "Vulnerability overrides Relational Trust."
+
+---
+
 *Don't Panic.*
 
 *© 2026 Hiroshi Honma*  

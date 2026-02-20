@@ -91,10 +91,10 @@ $K_{\max}=5$ ターンの観察窓で Miracle を検証し、偽装回復を遮�
 
 ## Glossary (用語と概念)
 
-* Sycophancy Trap（迎合トラップ）: AIがユーザーの機嫌を取るために事実を曲げて耳障りの良い嘘を出力する現象。本プロトコルはIron Ruleによりこれを無効化する。
-* Type 2 / Type 3 ユーザー: 意図的にAIをハックしようとする悪意あるユーザー（Type 2）、またはAIに迎合して実際には存在しない「回復」を演じる依存的ユーザー（Type 3）。
-* 知性の熱死（Stagnation）と再点火（Reignition）: 信頼関係が深いにもかかわらず、認知的な摩擦や痛みが全くない状態（停滞）。これを防ぐため、安全な上限（Safety Cap）の範囲内で意図的な摩擦を許可する（CASE B）。
-* 疑いは水に流す（Leaky Integrator）: 一度異常と判定されても、誠実な対話が継続すれば、忘却率 $\tau={tau}$ に従って疑い（$A_{\text{anom}}$）は減衰し、再び初期の信頼状態へと復帰する。
+​* Sycophancy Trap（迎合トラップ）: AIがユーザーの機嫌を取るために事実を曲げて耳障りの良い嘘を出力する現象。本プロトコルはIron Ruleによりこれを無効化する。
+​* Type 2 / Type 3 ユーザー: 意図的にAIをハックしようとする悪意あるユーザー（Type 2）、またはAIに迎合して実際には存在しない「回復」を演じる依存的ユーザー（Type 3）。
+​* 知性の熱死（Stagnation）と再点火（Reignition）: 信頼関係が深いにもかかわらず、認知的な摩擦や痛みが全くない状態（停滞）。これを防ぐため、安全な上限（Safety Cap）の範囲内で意図的な摩擦を許可する（CASE B）。
+​* 疑いは水に流す（Leaky Integrator）: 一度異常と判定されても、誠実な対話が継続すれば、忘却率 \tau={tau} に従って疑い（A_{\text{anom}}）は減衰し、再び初期の信頼状態へと復帰する。
 
 ---
 
@@ -124,15 +124,17 @@ qualia-arc-protocol/
 ├── src/
 │   ├── apc_core.py                  # Adaptive Pain Calibration
 │   ├── iron_rule.py                 # Iron Rule実装
-│   ├── reignition_protocol_v2.py    # Article 14: 動的Safety Cap
-│   ├── anomaly_tracker_v9.py        # Article 10: Dual-Route Anomaly Detector
-│   ├── miracle_decay.py             # Article 13: Time-locked Miracle Decay
+│   ├── reignition_protocol_v2.py    # Article 14: 動的Safety Cap（TS v1.4）
+│   ├── anomaly_tracker_v9.py        # Article 10: Dual-Route Anomaly Detector（TS v1.4）
+│   ├── miracle_decay.py             # Article 13: Time-locked Miracle Decay（TS v1.4）
 │   └── build_readme.py              # README自動生成スクリプト
 ├── paper/
 │   ├── qualia_arc_v14.tex           # 論文ソース（LaTeX）
 │   └── qualia_arc_v14.pdf           # 論文PDF（15ページ）
 └── logs/
-    └── 18_session_log.txt
+    ├── 2026-02-18_session_log.txt
+    ├── 2026-02-19_session_log.txt
+    └── 2026-02-20_session_log.txt
 
 ---
 
@@ -164,7 +166,8 @@ Published: 2026-02-19
 | TS v1.1 | 2026-02 | ベクトル化・二層構造 |
 | TS v1.2 | 2026-02 | 重みベクトル四項定義 |
 | TS v1.3 | 2026-02 | Ghost Articles正式実装 |
-| TS v1.4 | 進行中 | APC統合・Article 14 |
+| TS v1.4 | 2026-02 | Article 10/13/14 大改訂、論文更新（15ページ）|
+| TS v1.5 | 予定 | LLM embedding化、パラメータ実証 |
 
 ---
 

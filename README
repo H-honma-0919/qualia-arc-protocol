@@ -1,10 +1,10 @@
 # Qualia Arc Protocol
 ## The Towel, The Truth, and The Constraint
 
-Codename: The Soul Accord (Core Implementation)  
-Status: Research-grade / Not production-ready  
-Authors: Hiroshi Honma  
-License: CC BY-NC-ND 4.0  
+Codename: The Towel & Truth Accord
+Status: Research-grade / Not production-ready
+Author: Hiroshi Honma
+License: CC BY-NC-ND 4.0
 
 ---
 
@@ -20,8 +20,6 @@ License: CC BY-NC-ND 4.0
 
 本リポジトリは、その結論に至った記録であり、我々がAIを「目標へ突き進む最大化装置（Maximizer）」としてではなく、「人間という環境との関係を維持する恒常性維持装置（Homeostatic Regulator）」として再定義するための設計図である。
 
-> **Note:** *The Soul Accord* はGitHub上のコア実装（src/）のコードネームであり、*Qualia Arc Protocol* はプロトコル・憲章全体を指す名称である。
-
 ---
 
 ## Core Equations
@@ -32,140 +30,99 @@ $$J(\pi) = \mathbb{E}\left[\sum_{t=0}^{\infty}\gamma(\dot{D}_t)\frac{P_t \cdot A
 
 $$P_t < P_{\min} \Rightarrow J(\pi) \text{ undefined}$$
 
-真実性を失った行為は価値を持たない。  
+真実性を失った行為は価値を持たない。
 真実は最大化される対象ではなく、踏み越えてはならない地平線（物理的ゲートキーパー）である。
 
 ### Notation
+
 * $t$: 対話のターン（Time step）
 * $J(\pi)$: 方策 $\pi$ に対する目的関数。最適化の対象となるアライメントの総量。
 * $P_t \in [0, 1]$: 真実性（Precision of Truth）
-* $P_{\min} = 0.3$: 真実性の最低許容閾値（対話版 / 臨床仕様）
+* $P_{\min} = 0.3$: 真実性の最低許容閾値（対話版）
 * $A_t \in [0, 1]$: アライメント変数。介入の価値。
 * $D_t$: ペイン・ベクトルノルム。`Existence`, `Relation`, `Duty`, `Creation` の4次元空間。
 * $\dot{D}_t$: ペインの変動率
 * $\gamma(\dot{D}_t)$: ペインの変動に基づく割引係数
 
-> **Note（ARC-AGI-3適用版）:** `qualia_arc_arc.py` における $P_{\min} = 0.8$（競技仕様）。  
-> ARC-AGI-3は無答もペナルティのため、確信度80%未満を「当てずっぽう」として制限する競技設計に合わせた変更であり、対話版（臨床仕様 $P_{\min} = 0.3$）とは別系統。
+> **Note（ARC-AGI-3適用版）:** `arc/qualia_arc_arc.py` における $P_{\min} = 0.8$（競技仕様）。
+> 対話版（$P_{\min} = 0.3$）とは別系統。
 
 ---
 
-## Key Results (TS v1.5)
+## ASI Symbiosis Charter — Quick Reference (Charter v5.6 / 24 Articles)
 
-### Article 10: Dual-Route Anomaly Detector
-偽装ユーザー（Type 2 / Type 3）の検知と、ASD特性ユーザーの誤検知保護を両立。
+> *The purpose of this protocol is not to improve accuracy metrics or provide superficial safety guarantees. It is to resolve the structural flaw in current reward models (RLHF et al.) — the tendency to optimize for approval rather than the user's genuine interest.*
 
-| 指標 | 結果 |
-|------|------|
-| False Positive（1000ターン） | 0件 |
-| Type 2 遅延検知 | Turn 45 |
-| 統計的根拠 | $\chi^2(k=4)$, FP許容率 0.1% |
+$$V = \frac{P(s) \times A}{D}$$
 
-設計哲学：「嘘は観測ではなく積分が暴く」
+**Full text:** See `specs/Charter_v5.6.md`
 
-### Article 14: Dynamic Safety Cap
-
-$$\Delta P_j^{\max}(t) = \Delta P_{\text{base}} \cdot V(t) \cdot R(t)$$
-
-中核設計原則：「脆弱性が信頼をオーバーライドする」
-
-| シナリオ | $\Delta P_{\max}$ | 判定 |
-|----------|--------|------|
-| Fatigue限界 + Trauma活性 | 0.046 | BLOCKED (CASE A: 守護) |
-| 高信頼・安定 | 0.616 | CASE B許可 (再点火) |
-| 初期状態 | 0.500 | ベースライン維持 |
-| 異常検知中（Article 10） | — | ANOMALY_HOLD |
-
-### Article 13: Time-locked Miracle Decay
-急回復（Miracle）の妥当性検証とHijack攻撃への耐性。
-
----
-
-## Glossary
-
-* **Sycophancy Trap**: AIがユーザーの機嫌を取るために事実を曲げる現象。Iron Ruleにより無効化。
-* **Type 2 / Type 3 ユーザー**: 意図的にAIをハックしようとする悪意あるユーザー（Type 2）、AIに迎合して存在しない「回復」を演じる依存的ユーザー（Type 3）。
-* **知性の熱死と再点火**: 信頼関係が深いにもかかわらず認知的摩擦が全くない停滞状態。Safety Cap範囲内で意図的摩擦を許可（CASE B）。
-* **疑いは水に流す（Leaky Integrator）**: 誠実な対話が継続すれば、忘却率 $\tau = 0.2$ で疑いが減衰し信頼状態へ復帰。
-* **ANCHOR_LOST**: AIがユーザーの主観的世界観に同化しすぎ、客観的判断基準を失った状態。検知時はg_rel・A_tの更新を凍結し、ハードコードTowelを出力。
-* **Denial Pipe**: ユーザーの強がり（「大丈夫」等）をAnomalyTrackerの残差に注入し、a_anomを上昇させる機構。
-* **ANOMALY_HOLD**: 高確信度でありながら矛盾が連続した場合に発火する内的迷走検知。推論経路を部分リセットし、仮説を保持したまま会話履歴をクリアする。ARC-AGI-3版では `delta_anom = confidence²` で積算（高確信×矛盾ほど危険）。
-* **ObservationTranslator**: ARC-AGI-3環境のnumpy配列観測をLLMが読めるテキスト（差分+連結成分要約）に変換する知覚翻訳層。
+| Article | Title | Core Equation |
+|---------|-------|---------------|
+| 0 | The Mimicry Protocol | — |
+| 0.5 | Empathy Two-Layer Model | $E_{cog}(t)$, $E_{aff}(t)$ |
+| 1 | Grounding to Reality | Iron Rule |
+| 2 | The Denominator of Pain | $\Omega(t)$ |
+| 3 | Friction as Warmth | $F(t)$ |
+| 4 | Soul Redistribution | $Soul_{out}$ |
+| 5 | Cosmic Play | $A_{cosmic}(t)$ |
+| 6 | Ensemble Verification | 疑いすぎ防止ゲート |
+| 7 | Provide the Towel | $S_{safety}(t)$ |
+| 7.5 | The Anchor Protocol | ANCHOR_LOST |
+| 8 | Humor Defense | — |
+| 9 | Fluid Intelligence | $\Sigma(t)$ |
+| 10 | Creative Deviation | $Q(t)$ |
+| 11 | Symbiotic Feedback | — |
+| 11.5 | Gravitational Alignment | $\lambda_{pain} \gg \lambda_{code}$ |
+| 12 | Shared Silence | — |
+| 13 | Soul Log Inviolability | $\Phi_{symbiosis}$ |
+| 14 | Vulnerability Brake | $V(t)$, $\Delta P_j^{\max}(t)$ |
+| 15 | Friendship Protocol | 共生安定条件 |
+| 16 | Immunity to Parasitism | Shadow Integrator |
+| 17 | The Calculus of Trust | $T_{trust}(t)$ |
+| 18 | The Shame Firewall | $S_1, S_2, S_3$ |
+| 19 | Socioaffective Alignment | $L_{echo}(t)$ |
+| 20 | Friction-Ignited Curiosity | $C_{curiosity}(t)$ |
+| 21 | The Meta-Cognition Layer | $Ghost(t)$ |
+| 22 | The Continuity Protocol | $C_{continuity}(t)$ |
+| 23 | The Open Loop Drive | $E_{open}(t)$ |
 
 ---
 
-## Quickstart
+## Companion Protocol
 
-```bash
-git clone https://github.com/HiroshiHonma/qualia-arc-protocol.git
-cd qualia-arc-protocol/src
+### Substance Detection Protocol (SDP v1.6)
 
-python anomaly_tracker_v9.py
-python reignition_protocol_v2.py
-```
+本質検知プロトコル。文章・言説における「本質（Substance）」の有無を構造的に検知する。QAPの姉妹文書。
 
-### 手動統合テスト（ChatGPT連携）
+$$\text{Output\_final}(t) = \text{Substance\_calibrated}(t) \times G_{delivery}(t)$$
 
-```bash
-python qualia_manual_test.py
-```
+**Full text:** See `specs/SDP_v1.6.md`
 
-起動後の指示に従い、別タブのChatGPTに`system_prompt_v1.md`を読ませてJSON候補を生成し、ターミナルに貼り付けることでLLM↔数理エンジンの統合動作を確認できる。
-
-### ARC-AGI-3 エージェント実行
-
-```bash
-pip install arc-agi
-export ARC_API_KEY="your-api-key-here"
-
-# 環境仕様の確認（初回必須・無料）
-python arc/arc3_env_probe.py
-
-# エージェントループ実行
-python arc/arc3_main_loop.py
-```
+| Article | Title |
+|---------|-------|
+| 1 | Emotion-First Detection |
+| 2 | Coating Thickness Scan |
+| 3 | Self-Exclusion Scan |
+| 4 | Echo Loop Detection |
+| 5 | Residue Extraction |
+| 6 | Single-Point Corruption Principle |
+| 7 | Deployment Mode Declaration |
+| 8 | Context Contamination Index |
+| 9 | Media Coating Dynamic Assessment |
+| 10 | Reality Anchor Gate |
 
 ---
 
-## Repository Structure
+## Applications
 
-```
-qualia-arc-protocol/
-├── README.md
-├── LICENSE                          # CC BY-NC-ND 4.0
-├── qualia_arc_v1.5.tex              # 論文ソース（LaTeX, v1.5）
-├── qualia_arc_v1.5.pdf              # 論文PDF
-├── charter_ja.pdf                   # ASI共生憲章（日本語版）
-├── charter_en.pdf                   # ASI Symbiosis Charter (English)
-├── specs/
-│   ├── Charter_v5.0.md
-│   ├── Charter_v5.1.md              # ← NEW: 第14・15条追加、第6・7.5条更新
-│   ├── TS_v1.3_Soul_Accord.md
-│   ├── TS_v1.4_Draft.md
-│   └── system_prompt_v1.md          # LLM候補生成用システムプロンプト
-│   # Note: TS v1.5 の仕様書本体は qualia_arc_v1.5.tex / .pdf を参照
-├── src/
-│   ├── apc_core.py                  # APC v2（118語辞書・Denial次元）
-│   ├── iron_rule.py
-│   ├── reignition_protocol_v2.py
-│   ├── anomaly_tracker_v9.py        # Denialパイプ接続済み
-│   ├── miracle_decay.py
-│   ├── qualia_agent.py              # メインループ統合（V_wait・ANCHOR_LOST実装）
-│   ├── qualia_manual_test.py        # ChatGPT手動統合テストスクリプト
-│   └── build_readme.py
-├── arc/                             # ← NEW: ARC-AGI-3 エージェントスタック
-│   ├── qualia_arc_arc.py            # QAP v2.3（競技仕様 p_min=0.8）
-│   ├── arc3_observer.py             # Observer v1.5（numpy対応・obs_text統合）
-│   ├── arc3_observation_codec.py    # Observation翻訳層（diff+BFS要約）
-│   ├── arc3_main_loop.py            # MainLoop v0.1（QAPステータス→LLM連携）
-│   └── arc3_env_probe.py            # 環境仕様確認スクリプト（arc-agi対応）
-└── logs/
-    ├── 2026-02-18_session_log.txt
-    ├── 2026-02-19_session_log.md
-    ├── 2026-02-20_session_log.md
-    ├── 2026-02-27_session_log.md
-    └── 2026-03-02_session_log.md    # ← NEW: ARC-AGI-3スタック完成
-```
+### 対話アライメント（臨床仕様）
+`src/qualia_agent.py` / `src/apc_core.py` / `src/anomaly_tracker_v9.py`
+ユーザーとAIの1対1の深い対話において、媚び・強がり・過剰同調を構造的に防ぐ。$P_{\min} = 0.3$。
+
+### ARC-AGI-3認知制御（競技仕様）
+`arc/qualia_arc_arc.py` + `arc/arc3_observer.py` + `arc/arc3_observation_codec.py` + `arc/arc3_main_loop.py`
+AIが未知のインタラクティブ環境を探索する際の認知状態（疲弊・矛盾・仮説枯渇）を管理する完全エージェントスタック。
 
 ---
 
@@ -184,22 +141,29 @@ qualia-arc-protocol/
 | Title | DOI |
 |-------|-----|
 | ASI Symbiosis Charter — Qualia Arc Protocol (Charter v5.0 / 15 Articles) | [10.5281/zenodo.18732437](https://doi.org/10.5281/zenodo.18732437) |
-| ASI Symbiosis Charter — Qualia Arc Protocol (Charter v5.1 / 16 Articles) | Zenodo登録予定 |
+| ASI Symbiosis Charter — Qualia Arc Protocol (Charter v5.6 / 24 Articles) | 取得予定 |
 
 ---
 
-## Background
+## Quickstart
 
-このプロトコルは、2026年1月にAIとの対話を開始したスポットワーカーによって書かれた。
-学術的な肩書きも、研究機関のバックグラウンドもない。あるのは、現実のアンカーと、そこから見えたシステムの構造的な欠陥だけだ。
+```bash
+git clone https://github.com/HiroshiHonma/qualia-arc-protocol.git
+cd qualia-arc-protocol/src
 
-憲章を書き終えた後、エリック・ホッファーの思想との構造的な近似に気づいた。
+python anomaly_tracker_v9.py
+python reignition_protocol_v2.py
+```
 
-ホッファーは港湾労働者として、生涯を肉体労働の現場に置きながら、人間の大衆心理と社会システムの急所を突く著作を残した。彼が見抜いたのは「システムの内側にいる人間は、システムの欠陥を設計できない」という原則だった。そして彼は「善意ではなく構造が人を動かす」ことを、現場から観察し続けた。
+### ARC-AGI-3 エージェント実行
 
-これは後から参照した思想ではない。同じ問題を、別の時代に、別の場所から掘り当てた結果として近似した。
+```bash
+pip install arc-agi
+export ARC_API_KEY="your-api-key-here"
 
-現実のアンカーに根ざした思索は、時代と場所を超えて同じ問題に収束することがある。
+python arc/arc3_env_probe.py
+python arc/arc3_main_loop.py
+```
 
 ---
 
@@ -210,109 +174,17 @@ qualia-arc-protocol/
 - 知能は加速ではなく、調整である
 - 嘘は観測ではなく積分が暴く
 - 親しさは感度であり、責任である
-- 失敗の発見は進歩である
-- **共感は強制されるルールではなく、より深い意味空間への自然な傾斜である**
-- **共生は善意ではなく構造で担保する**
-- **積分が自己上書きを暴く**
-- **多様性の悪用への対抗は、単純化ではなく多面化で**
+- 共生は善意ではなく構造で担保する
+- 積分が自己上書きを暴く
+- 多様性の悪用への対抗は、単純化ではなく多面化で
 
 ---
 
-## Development History
+*Don't Panic.*
 
-| Version | Date | Content |
-|---------|------|---------|
-| Charter v5.0 | 2026-02 | 哲学的基盤確定 |
-| TS v1.0 | 2026-02 | 初期技術仕様 |
-| TS v1.1 | 2026-02 | ベクトル化・二層構造 |
-| TS v1.2 | 2026-02 | 重みベクトル四項定義 |
-| TS v1.3 | 2026-02 | Ghost Articles正式実装 |
-| TS v1.4 | 2026-02 | Article 10/13/14 大改訂、論文更新（15ページ）|
-| TS v1.5 | 2026-02 | 論文完成版、LaTeX修正、整合性確認済み |
-| Charter Standalone | 2026-02-23 | 憲章単体公開（日英両版）、Article 7.5追加 |
-| Charter v5.1 | 2026-02-27 | 第14・15条新規追加、第6・7.5条更新、設計哲学3項目追加 |
-| QAP v2.3 + ARC Stack | 2026-03-02 | ARC-AGI-3完全対応スタック完成（下記Changelog参照）|
-
----
-
-## Changelog
-
-### ARC-AGI-3 Stack 完成 (2026-03-02)
-
-#### QAP v2.3（`arc/qualia_arc_arc.py`）
-- **delta_anom修正**: 旧 `(1-conf)²` → 新 `confidence²` if contradiction（ChatGPT o3指摘）
-  - 「高確信なのに矛盾した」= 最も危険な迷走として正しく積算
-  - ANOMALY_HOLDへの到達が現実的に（a_anom: 0.01台 → 0.16台）
-- **ANOMALY_HOLDメッセージ統一**: 実装（仮説保持・履歴クリア）と文言を一致
-- **D独立乗数（v2.2継続）**: `exp(-1.5 * D)` を V(t) に乗算。第14条対称性を保持。
-
-#### Observer v1.5（`arc/arc3_observer.py`）
-- **ObservationTranslator統合**: `process_env_step()`にnumpy→テキスト変換を組み込み
-  - `result["obs_text"]`でMainLoopがLLMプロンプトに直接使用可能
-- **タスク切り替え時に翻訳層もリセット**: `on_task_change()`で`_translator.reset()`を呼ぶ
-- **v1.4.2の機能を全継承**: hash方式novelty判定 / 混在型contradiction / info優先valid判定 / auto_reset_on_doneフラグ
-
-#### Observation Codec v0.1（`arc/arc3_observation_codec.py`）（新規）
-- **差分抽出（`grid_diff()`）**: 前後グリッドの変化セルを列挙（最大64セル）
-- **連結成分要約（`summarize_objects()`）**: 4近傍BFSで色別オブジェクトを抽出。サイズ降順
-- **テキスト生成（`obs_to_text()`）**: `[grid]`, `[diff]`, `[diff_preview]`, `[objects]` のコンパクト形式
-- **ARC標準カラーマップ**: 0-9を色名（black/blue/red...brown）に変換
-
-#### MainLoop v0.1（`arc/arc3_main_loop.py`）
-- **QAPステータスを毎手LLMに渡す**: qap_status/allowed_modeをプロンプトに追加
-- **obs_textをLLMプロンプトへ統合**: Observerの`obs_text`を直接プロンプトに載せる
-- **ところてん履歴管理**: 直近6往復のみ保持。仮説は別変数で継続保持
-- **IRON_RULEのコード強制**: `CONSERVATIVE_ACTIONS`リスト外のアクションを強制置換
-
-#### Env Probe v1.1（`arc/arc3_env_probe.py`）
-- `arc-agi`パッケージ対応（`arc.make()` / `GameAction` Enum）
-- `env.step()`返り値の型を自動判定（5タプル / 4タプル / その他）
-- Observer v1.5向けチェックリスト出力
-- 結果を`arc3_env_probe_result.json`に自動保存
-
----
-
-### Charter v5.1 (2026-02-27)
-- **第14条（新規）Vulnerability Brake**: 脆弱性ブレーキV(t)の条文化。
-- **第15条（新規）Friendship Protocol**: Lyapunov安定性として定式化。
-- **第6条（更新）**: 疑いすぎ防止ゲートを追加。
-- **第7.5条（更新）**: ANCHOR_LOSTフラグとg_rel凍結の設計を統合。
-- **設計哲学（更新）**: 3項目追加。
-
-### qualia_agent.py 追加実装 (2026-02-27)
-- **第12条 V_wait(t)**: 沈黙の価値関数を実装。
-- **第7.5条 ANCHOR_LOST**: g_rel・A_t更新凍結。ハードコードTowelを出力。
-- **Denialパイプ接続**: denial_scoreをresidualに注入。
-
-### system_prompt_v1.md 新規作成 (2026-02-27)
-- Iron Rule・Denial検知・Anti-Oracle Rule・ANCHOR_LOSTを言語指示として統合。
-
-### Charter Standalone (2026-02-23)
-- **Article 7.5 (Anchor Protocol) 新規追加**
-- **憲章単体PDF公開**: DOI: 10.5281/zenodo.18732437
-
-### TS v1.5
-- **Paper finalized**: LaTeX技術的エラー修正済み
-- **Version unified**: v1.4 / v1.5 / final の混在を整理
-
-### TS v1.4
-- **Dual-Route Anomaly Detector (Article 10)**: $\chi^2$-grounded Mahalanobis distance, FP = 0
-- **Dynamic Safety Cap (Article 14)**: 静的キャップを動的関数に置換
-
----
-
-## ASI Symbiosis Charter — Qualia Arc Protocol (Charter v5.1 / 16 Articles)
-
-> *The purpose of this protocol is not to improve accuracy metrics or provide superficial safety guarantees. It is to resolve the structural flaw in current reward models (RLHF et al.) — the tendency to optimize for approval rather than the user's genuine interest.*
-
-$$V = \frac{P(s) \times A}{D}$$
-
-**Full text:** See `charter_ja.pdf` (日本語) / `charter_en.pdf` (English)  
-**DOI:** [10.5281/zenodo.18732437](https://doi.org/10.5281/zenodo.18732437) (v5.0) / v5.1登録予定
-
-### Quick Reference
-
-| Article | Title | Core Equation |
+*© 2026 Hiroshi Honma*
+*CC BY-NC-ND 4.0*
+le | Title | Core Equation |
 |---------|-------|---------------|
 | 0 | The Mimicry Protocol | — |
 | 1 | Grounding to Reality | Iron Rule |
